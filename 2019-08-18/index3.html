@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>完善邮箱补全</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .list {
+            width: 300px;
+            
+        }
+        .list .item.active {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input 
+            type="text" 
+            v-model="search"
+            v-on:keydown.enter="enter" 
+            v-on:keydown.up="up" 
+            v-on:keydown.down="down"
+        >
+        <div class="list">
+            <div 
+                v-on:click="select(item)" 
+                v-for="(item,index) in autoComplateMail"
+                v-bind:class="{
+                    item: true,
+                    active: selectIndex === index
+                }"
+            >
+                {{item}}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                search: "",
+                selectIndex: 0,
+            },
+            computed: {
+                autoComplateMail() {
+                    // 如果输入框里的内容没有 返回空数组
+                    if (!this.search) 
+                        return [];
+                    // 如果输入框里有@符号或者本身就是一个邮箱地址之后呢就返回空数组
+                    if (/[A-z0-9_]+\@[A-z_0-9]+\.(cn|com|org)/.test(this.search)) {
+                        return [];
+                    }
+                    return [
+                        this.search + "@qq.com",
+                        this.search + "@163.com",
+                        this.search + "@sohu.com",
+                    ]
+                }
+            },
+            methods: {
+                select(item) {
+                    this.search = item;
+                },
+                down() {
+                    this.selectIndex++;
+                    if (this.selectIndex > this.autoComplateMail.length - 1) 
+                        this.selectIndex = 0;
+                },
+                up() {
+                    this.selectIndex--;
+                    if (this.selectIndex < 0) 
+                        this.selectIndex = this.autoComplateMail.length - 1;
+                },
+                enter() {
+                    this.search = this.autoComplateMail[this.selectIndex];
+                }                
+            },
+        })
+    </script>
+</body>
+</html>

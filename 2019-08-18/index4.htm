@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>搜索框</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .list {
+            width: 300px;
+            
+        }
+        .list .item.active {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <input 
+            type="text" 
+            v-model="search"
+            v-on:keydown.enter="enter" 
+            v-on:keydown.up="up" 
+            v-on:keydown.down="down"
+        >
+        <div class="list">
+            <div 
+                v-on:click="select(item)" 
+                v-for="(item,index) in searchArr"
+                v-bind:class="{
+                    item: true,
+                    active: selectIndex === index
+                }"
+            >
+                {{item}}
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                search: "",
+                selectIndex: 0,
+                userlist: ["张三", "李四", "李伟", "张伟"]
+            },
+            computed: {
+                searchArr() {
+                    // 如果输入框里的内容没有 返回空数组
+                    if (!this.search)
+                        return [];
+                    let name = this.userlist.find(username => {
+                        return username === this.search;
+                    })
+                    if (name)
+                        return [];
+                    return this.userlist.filter(username => {
+                        return username.indexOf(this.search) >= 0;
+                    })
+                }                
+            },
+            methods: {
+                select(item) {
+                    this.search = item;
+                },
+                down() {
+                    this.selectIndex++;
+                    if (this.selectIndex > this.searchArr.length - 1) 
+                        this.selectIndex = 0;
+                },
+                up() {
+                    this.selectIndex--;
+                    if (this.selectIndex < 0) 
+                        this.selectIndex = this.searchArr.length - 1;
+                },
+                enter() {
+                    this.search = this.searchArr[this.selectIndex];
+                    this.selectIndex = 0;
+                }                
+            },
+        })
+    </script>
+</body>
+</html>
