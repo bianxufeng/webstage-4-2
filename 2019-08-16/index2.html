@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>title</title>
+    <style>
+        li {
+            list-style-type: none;
+            padding: 0;
+        }
+        .fl{
+            float:left;
+        }
+        .fr{
+            float:right;
+        }      
+        ul {
+            width: 300px;
+            height: 300px;
+            border: 1px solid #000;
+        }
+        li {
+            width: 180px;
+            height: 20px;
+        }
+        div {
+            width: 300px;
+            height: 40px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <li 
+                v-for="item in list" 
+                v-bind:class="{
+                    'fl': item.id === 1,
+                    'fr': item.id === 2 
+                }">
+                {{item.name}}:{{item.content}}
+            </li>
+        </ul>
+        <div>            
+            <input type="text" v-model="text"/>
+            <button v-on:click="send">发送</button>
+            <button v-on:click="change">换人</button>
+        </div>  
+    </div>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                text: '',
+                currentid: 1,
+                list: [{
+                    id: 1,
+                    name: '张三',
+                    content: "111111111",
+                }, {
+                    id: 2,
+                    name: '李四',
+                    content: "222222222",
+                }]
+            },
+            methods: {
+                change() {
+                    if (this.currentid === 1)
+                        this.currentid = 2;
+                    else
+                        this.currentid =1;
+                },
+                send() {
+                    if (!this.text)
+                        return;
+                    this.list.push({
+                        id: this.currentid,
+                        name: this.currentid === 1 ? '张三': '李四',
+                        content: this.text
+                    });
+                    this.text = "";
+                }           
+            }
+        })
+    </script>
+</body>
+</html>
