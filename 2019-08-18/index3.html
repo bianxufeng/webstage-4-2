@@ -53,7 +53,7 @@
                     if (!this.search) 
                         return [];
                     // 如果输入框里有@符号或者本身就是一个邮箱地址之后呢就返回空数组
-                    if (/[A-z0-9_]+\@[A-z_0-9]+\.(cn|com|org)/.test(this.search)) {
+                    if (/\w+@/.test(this.search)) {
                         return [];
                     }
                     return [
