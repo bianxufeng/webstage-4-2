@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>title</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css">    
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="./components/Table.js"></script>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                column: [
+                    {
+                        title: "#",
+                        key: "id",
+                    },
+                    {
+                        title: "First Name",
+                        key: "firstName"
+                    },
+                    {
+                        title: "LastName",
+                        key: "lastName"
+                    }
+                ],
+                datas: [
+                    {
+                        id: "1",
+                        firstName: "Mark",
+                        lastName: "Otto"
+                    },
+                    {
+                        id: "2",
+                        firstName: "Jacob",
+                        lastName: "Thornton"
+                    },
+                    {
+                        id: "3",
+                        firstName: "Larry",
+                        lastName: "the Bird"
+                    }
+                ]
+            },
+            template: `
+                <div>
+                    <Table :column="column" :datas="datas">
+                        <template slot="mytable" slot-scope="data" >
+                            <button @click="handleClick(data.item, data.index)">删除</button>
+                        </template>
+                    </Table>
+                </div>
+            `,
+            methods: {
+                handleClick(item, index) {
+                    console.log("删除", item, index);
+                }
+            },
+
+        })
+    </script>
+</body>
+</html>
